@@ -163,6 +163,49 @@ function reset(){
     scoreText.innerHTML = "Score: 0";
 }
 
+var xDown, yDown;
+
+// Handles the touch start
+function handleTouchStart(ev){
+    xDown = ev.touches[0].clientX;
+    yDown = ev.touches[0].clientY;
+}
+
+function handleTouchMove(ev){
+    if(!xDown || !yDown){
+        return;
+    }
+    
+    var xUp = evt.touches[0].clientX;
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    // left/right
+    if(Math.abs(xDiff) > Math.abs(yDiff)){
+        if(xDiff > 0){
+            alert("left swipe");
+            direction = 4;
+        } else {
+            //alert("right swipe");
+            direction = 6;
+        }
+    } else {
+        //up/down
+        if(yDiff > 0){
+            //alert("up swipe");
+            direction = 8;
+        } else {
+            //alert("down swipe");
+            direction = 2;
+        }
+    }
+
+    xDown = null;
+    yDown = null;
+}
+
 function initialize() {
     createCell();
     play();
@@ -195,6 +238,9 @@ function initialize() {
     });
 
     spawnApple();
+
+    window.addEventListener("touchstart", handleTouchStart, false);
+    window.addEventListener("touchmove", handleTouchMove, false);
 }
 
 if (document.addEventListener) {
