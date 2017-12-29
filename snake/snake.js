@@ -6,9 +6,9 @@ var gameOver = false;
 var snake = [];
 // dir : 8 - up, 6 - right, 2 - down, 4 - left
 var direction = 6;
-var step = 50; // 25px per move
+var step = 45; // 25px per move
 var lengthOfSnake = -1;
-var fps = 8;
+var fps = 10;
 var apple; // the apple
 var score = 0;
 
