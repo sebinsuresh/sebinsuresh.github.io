@@ -8,7 +8,7 @@ var snake = [];
 var direction = 6;
 var step = 25; // 25px per move
 var lengthOfSnake = -1;
-var fps = 10;
+var fps = 8;
 var apple; // the apple
 var score = 0;
 
@@ -169,6 +169,21 @@ var xDown, yDown;
 function handleTouchStart(evt){
     xDown = evt.touches[0].clientX;
     yDown = evt.touches[0].clientY;
+    if(gameOver){
+        for(var i = 0; i < snake.length; i++){
+            var x = snake[i].style.left;
+            x = x.substring(0, x.indexOf("px"));
+            var y = snake[i].style.top;
+            y = y.substring(0, y.indexOf("px"));
+            x = Number.parseInt(x);
+            y = Number.parseInt(y);
+            if(xDown >= x && xDown <= (x + step) 
+                && yDown >= y && yDown <= (y + step)){
+                reset();
+                play();  
+            }
+        }
+    }
 }
 
 function handleTouchMove(evt){
@@ -232,7 +247,7 @@ function initialize() {
             }
         }
         if (event.keyCode === 13 && gameOver){
-            //console.log("game over. hit reset")
+            //console.log("game over. hit reset or touch the snake")
             reset();
             play();
         }
