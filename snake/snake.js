@@ -31,8 +31,8 @@ function createCell() {
     cell.style.height = step + 'px';
     cell.style.borderRadius = step/5 + 'px';
     cell.style.position = "absolute";
-    cell.style.left = '100px'; // these are only for the first cell
-    cell.style.top = '200px';  // ^^
+    cell.style.left = step + 'px'; 
+    cell.style.top = step + 'px';  
     cell.style.background = 'white';
     document.body.appendChild(cell);
     snake.push(cell);
