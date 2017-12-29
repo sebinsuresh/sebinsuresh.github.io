@@ -105,9 +105,9 @@ function addChild() {
 
 function spawnApple() {
     apple = document.createElement("div");
-    apple.style.width = '25px';
-    apple.style.height = '25px';
-    apple.style.borderRadius = '5px';
+    apple.style.width = step + 'px';
+    apple.style.height = step + 'px';
+    apple.style.borderRadius = step/5 + 'px';
     apple.style.position = "absolute";
     apple.style.background = 'red';
     document.body.appendChild(apple);
