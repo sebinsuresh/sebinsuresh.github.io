@@ -199,27 +199,29 @@ function handleTouchMove(evt){
 
     // left/right
     if(Math.abs(xDiff) > Math.abs(yDiff)){
-        if(xDiff > 0){
+        if(xDiff > 20){
             //alert("left swipe");
             direction = 4;
         } else {
             //alert("right swipe");
+            if(xDiff < -20)
             direction = 6;
         }
     } else {
         //up/down
-        if(yDiff > 0){
+        if(yDiff > 10){
             //alert("up swipe");
             direction = 8;
         } else {
             //alert("down swipe");
             evt.preventDefault();
+            if(yDiff < -20)
             direction = 2;
         }
     }
 
-    xDown = null;
-    yDown = null;
+    xDown = xUp;
+    yDown = yUp;
 }
 
 function initialize() {
