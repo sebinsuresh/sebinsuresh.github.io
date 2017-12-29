@@ -27,9 +27,9 @@ scoreText.style.left = window.innerWidth - 125 + 'px';
 
 function createCell() {
     var cell = document.createElement("div");
-    cell.style.width = '25px';
-    cell.style.height = '25px';
-    cell.style.borderRadius = '5px';
+    cell.style.width = step + 'px';
+    cell.style.height = step + 'px';
+    cell.style.borderRadius = step/5 + 'px';
     cell.style.position = "absolute";
     cell.style.left = '100px'; // these are only for the first cell
     cell.style.top = '200px';  // ^^
