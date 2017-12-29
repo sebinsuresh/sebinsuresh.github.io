@@ -185,7 +185,7 @@ function handleTouchMove(evt){
     // left/right
     if(Math.abs(xDiff) > Math.abs(yDiff)){
         if(xDiff > 0){
-            alert("left swipe");
+            //alert("left swipe");
             direction = 4;
         } else {
             //alert("right swipe");
@@ -198,6 +198,7 @@ function handleTouchMove(evt){
             direction = 8;
         } else {
             //alert("down swipe");
+            evt.preventDefault();
             direction = 2;
         }
     }
