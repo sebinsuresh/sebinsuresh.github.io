@@ -166,12 +166,12 @@ function reset(){
 var xDown, yDown;
 
 // Handles the touch start
-function handleTouchStart(ev){
-    xDown = ev.touches[0].clientX;
-    yDown = ev.touches[0].clientY;
+function handleTouchStart(evt){
+    xDown = evt.touches[0].clientX;
+    yDown = evt.touches[0].clientY;
 }
 
-function handleTouchMove(ev){
+function handleTouchMove(evt){
     if(!xDown || !yDown){
         return;
     }
