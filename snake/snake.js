@@ -8,7 +8,7 @@ var snake = [];
 var direction = 6;
 var step = 25; // 25px per move
 var lengthOfSnake = -1;
-var fps = 8;
+var fps = 6;
 var apple; // the apple
 var score = 0;
 
