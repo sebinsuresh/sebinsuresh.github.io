@@ -1,3 +1,5 @@
+// The code could use some real cleaning up. 
+// Will do later
 "use strict";
 
 var game; // for the setInterval method
