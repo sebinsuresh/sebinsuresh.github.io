@@ -94,7 +94,7 @@ function moveCell(cell, direction) {
             && cell.style.top === snake[i].style.top) {
             stop();
             gameOver = true;
-            textOnScreen.innerHTML = "Score: " + score +  ". Hit Enter to restart.";
+            textOnScreen.innerHTML = "Score: " + score +  ". Hit Enter or touch the snake to Restart.";
         }
     }
 }
