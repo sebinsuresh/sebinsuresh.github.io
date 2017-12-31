@@ -16,10 +16,10 @@ var snake = []; // array that stores all the cell elements
 
 // direction : 8 - up, 6 - right, 2 - down, 4 - left
 var direction = 6; // initial direction is right
-var step = 4; // the number of pixels it moves per frame
-var size = 40; // the width of each cell
+var fps = 10; // frames per second, number of time the setInterval function is called per second
+var size = 40; // the width of each cell 
+var step = 40; // the number of pixels it moves per frame
 var lengthOfSnake = -1; // the number of elements - 1, in snake array
-var fps = 60; // frames per second, number of time the setInterval function is called per second
 var apple; // the apple - another cell object
 var score = 0; // score of the player. 10 per apple.
 var appleX, appleY; // x and y of apple
@@ -28,6 +28,9 @@ var appleX, appleY; // x and y of apple
 var textOnScreen = document.createElement("div");
 // Score text - top right
 var scoreText = document.createElement("div");
+var fpsText = document.getElementById("fps");
+var sizeText = document.getElementById("size");
+var stepText = document.getElementById("step");
 
 if (document.addEventListener) {
     document.addEventListener("load", initialize(), false);
@@ -38,7 +41,7 @@ function initialize() {
 
     document.body.appendChild(textOnScreen);
     document.body.appendChild(scoreText);
-
+    
     textOnScreen.innerHTML = "Arrow keys to move. P to Pause/Play.";
     textOnScreen.style.position = "absolute";
     textOnScreen.style.color = "grey";
@@ -50,11 +53,41 @@ function initialize() {
     scoreText.style.fontFamily = "Consolas";
     scoreText.style.left = window.innerWidth - 125 + 'px';
 
+    fpsText.style.position = 'absolute';
+    fpsText.style.left = '10px';
+    sizeText.style.position = 'absolute';
+    sizeText.style.left = '60px';
+    stepText.style.position = 'absolute';
+    stepText.style.left = '110px';
+    fpsText.style.top = '30px';
+    sizeText.style.top = '30px';
+    stepText.style.top = '30px';
+    fpsText.style.backgroundColor = 'grey';
+    sizeText.style.backgroundColor = 'grey';
+    stepText.style.backgroundColor = 'grey';  
+
     play();
     document.addEventListener("keydown", keyListener, false);
     spawnApple();
     window.addEventListener("touchstart", handleTouchStart, false);
     window.addEventListener("touchmove", handleTouchMove, false);
+
+    fpsText.addEventListener("change", function(event){
+        stop();
+        fps = Number(fpsText.value);
+        play();
+    }, false);
+    sizeText.addEventListener("change", function(event){
+        stop();
+        size = Number(sizeText.value);
+        reset();
+        play();
+    }, false);
+    stepText.addEventListener("change", function(event){
+        stop();
+        step = Number(stepText.value);
+        play();
+    }, false);
 }
 
 function createCell() {
@@ -91,6 +124,8 @@ function reset() {
     snake = [];
     direction = 6;
     createCell();
+    document.body.removeChild(apple);
+    spawnApple();
     moveApple();
     score = 0;
     scoreText.innerHTML = "Score: 0";
@@ -207,6 +242,7 @@ function isTouching(x, y, otherX, otherY) {
 
 function spawnApple() {
     apple = document.createElement("div");
+   // apple.id = "apple";
     apple.style.width = size + 'px';
     apple.style.height = size + 'px';
     apple.style.borderRadius = size / 5 + 'px';
