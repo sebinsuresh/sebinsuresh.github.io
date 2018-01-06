@@ -26,8 +26,11 @@ var appleX, appleY; // x and y of apple
 
 // The instruction text - top left
 var textOnScreen = document.createElement("div");
+textOnScreen.id = "textInfo";
+textOnScreen.className = "notBlinking";
 // Score text - top right
-var scoreText = document.createElement("div");
+var scoreBoard = document.createElement("div");
+scoreBoard.id = "scoreBoard";
 var fpsText = document.getElementById("fps");
 var sizeText = document.getElementById("size");
 var stepText = document.getElementById("step");
@@ -40,35 +43,20 @@ function initialize() {
     createCell();
 
     document.body.appendChild(textOnScreen);
-    document.body.appendChild(scoreText);
+    document.body.appendChild(scoreBoard);
     
     textOnScreen.innerHTML = "Arrow keys to move. P to Pause/Play.";
-    textOnScreen.style.position = "absolute";
-    textOnScreen.style.color = "grey";
-    textOnScreen.style.fontFamily = "Consolas";
 
-    scoreText.innerHTML = "Score: 0";
-    scoreText.style.position = "absolute";
-    scoreText.style.color = "grey";
-    scoreText.style.fontFamily = "Consolas";
-    scoreText.style.left = window.innerWidth - 125 + 'px';
+    scoreBoard.innerHTML = "Score: 0";
+    scoreBoard.style.left = window.innerWidth - 125 + 'px';
 
-    fpsText.style.position = 'absolute';
     fpsText.style.left = '10px';
-    sizeText.style.position = 'absolute';
     sizeText.style.left = '60px';
-    stepText.style.position = 'absolute';
     stepText.style.left = '110px';
-    fpsText.style.top = '30px';
-    sizeText.style.top = '30px';
-    stepText.style.top = '30px';
-    fpsText.style.backgroundColor = 'grey';
-    sizeText.style.backgroundColor = 'grey';
-    stepText.style.backgroundColor = 'grey';  
 
-    play();
-    document.addEventListener("keydown", keyListener, false);
     spawnApple();
+    play();
+    document.addEventListener("keydown", keyListener, false);    
     window.addEventListener("touchstart", handleTouchStart, false);
     window.addEventListener("touchmove", handleTouchMove, false);
 
@@ -92,13 +80,12 @@ function initialize() {
 
 function createCell() {
     var cell = document.createElement("div");
+    cell.id = "cell";
     cell.style.width = size + 'px';
     cell.style.height = size + 'px';
     cell.style.borderRadius = size / 5 + 'px';
-    cell.style.position = "absolute";
     cell.style.left = step + 'px';
     cell.style.top = step + 'px';
-    cell.style.background = 'white';
     document.body.appendChild(cell);
     snake.push(cell);
     lengthOfSnake++;
@@ -109,10 +96,13 @@ function play() {
     playing = true;
     gameOver = false;
     textOnScreen.innerHTML = "Arrow keys to move. P to Pause/Play.";
+    textOnScreen.className = "notBlinking";
+    apple.className = "blinking";
 }
 
 function stop() {
     clearInterval(game); // stops the game
+    apple.className = "";
     playing = false;
 }
 
@@ -128,7 +118,7 @@ function reset() {
     spawnApple();
     moveApple();
     score = 0;
-    scoreText.innerHTML = "Score: 0";
+    scoreBoard.innerHTML = "Score: 0";
 }
 
 function mover() {
@@ -181,7 +171,7 @@ function moveCell(cell, direction) {
         snake[lengthOfSnake].style.left = snake[lengthOfSnake - 1].style.left;
         snake[lengthOfSnake].style.top = snake[lengthOfSnake - 1].style.top;
         score += 10;
-        scoreText.innerHTML = "Score: " + score;
+        scoreBoard.innerHTML = "Score: " + score;
     }
 
     cell.style.left = x + 'px';
@@ -194,6 +184,7 @@ function moveCell(cell, direction) {
             stop();
             gameOver = true;
             textOnScreen.innerHTML = "Score: " + score + ". Hit Enter to Restart.";
+            textOnScreen.className = "blinking";
         }
     }
 }
@@ -242,13 +233,12 @@ function isTouching(x, y, otherX, otherY) {
 
 function spawnApple() {
     apple = document.createElement("div");
-   // apple.id = "apple";
+    apple.id = "apple";
     apple.style.width = size + 'px';
     apple.style.height = size + 'px';
     apple.style.borderRadius = size / 5 + 'px';
-    apple.style.position = "absolute";
-    apple.style.background = 'red';
     document.body.appendChild(apple);
+    apple.className = "blinking";
 
     moveApple();
 }

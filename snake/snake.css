@@ -1,0 +1,36 @@
+body {
+    background: black;
+    overflow-y: hidden;
+}
+
+#textInfo, #scoreBoard {
+    position: absolute;
+    color: grey;
+    font-family: Consolas;
+}
+
+#fps, #size, #step {
+    position: absolute;
+    top: 30px;
+    background-color: grey;
+}
+
+#cell {
+    position: absolute;
+    background: white;
+}
+
+#apple {
+    position: absolute;
+    background: red;
+}
+
+.blinking {
+    animation: blinkAnimation 2s infinite;
+}
+
+@keyframes blinkAnimation {
+    0% { opacity: 1;}
+    50% { opacity: 0.4;}
+    100% {opacity: 1;}
+}
