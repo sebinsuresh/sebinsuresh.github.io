@@ -41,6 +41,7 @@ function initialize(){
 	canvas = document.createElement("canvas");
 	document.body.appendChild(canvas);	
 	canvas.style.position = "absolute";
+	canvas.style.zIndex = -1;
 	canvas.style.top = "0px";
 	canvas.style.left = "0px";
 	canvas.width = windowWidth;
@@ -89,9 +90,10 @@ function initialize(){
 	
 	
 	for(var i = 0; i < balls.length; i++){
-		placeBall(balls[i]);
+		placeBall(balls[i]);		
 	}	
-	play();
+	drawLines();
+	//play();
 	document.body.focus();
 }
 
@@ -100,7 +102,7 @@ window.onkeyup = keyUpHandle;
 
 // handles the keyDown events
 function keyDownHandle(event){
-	console.log(event.key + "-pressed");
+	//console.log(event.key + "-pressed");
 	if(event.key === " " || event.key ==="Enter"){
 		play(); //play/pause
 	} else {
@@ -136,7 +138,8 @@ function keyDownHandle(event){
 
 // handles the keyUp events
 function keyUpHandle(event){
-	console.log(event.key + "-released");
+	//console.log(event.key + "-released");
+	
 	if(event.key=="Shift"){
 		keyValues.shiftDown = false;
 	}
@@ -161,28 +164,39 @@ function keyUpHandle(event){
 }
 
 // Uses the keyValues to rotate accordingly
+// Needs to use a separate function so multiple
+//  keys work at once.
+
+/* NOTE: This should be called from a repeating function 
+	like setInterval for it to work properly.
+	Might want to add more code to fix that.
+*/
 function useKeyValues(){
 	speedUp = 1;
+	if(keyValues.shiftDown) speedUp = 3;
+	
 	if(keyValues.arrowLeftDown){
 		if(keyValues.ctrlDown){
-			
+			rotateAll(speedUp*oneDegree, "z");
 		} else {
-			
+			rotateAll(speedUp*oneDegree, "y");
 		}
 	}
 	if(keyValues.arrowRightDown){
 		if(keyValues.ctrlDown){
-			
+			rotateAll(-speedUp*oneDegree, "z");
 		} else {
-			
+			rotateAll(-speedUp*oneDegree, "y");
 		}
 	}
 	if(keyValues.arrowUpDown){
-		
+		rotateAll(speedUp*oneDegree, "x");
 	}
 	if(keyValues.arrowDownDown){
-		
+		rotateAll(-speedUp*oneDegree, "x");
 	}	
+	
+	drawLines();
 }
 
 // plays/pauses the rotation
