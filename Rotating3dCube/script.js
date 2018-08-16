@@ -3,22 +3,35 @@
 // Attempt at simulating 3d vertices on a 2d screen
 "use strict";
 
+var oneDegree;
 var loop;
 var index;
 var fps;
+var speedUp;
 var balls;
 var ballRadius;
 var canvas;
 var ctx;
 var windowWidth, windowHeight;
 var playing;
+var keyValues = {
+	'ctrlDown' : false,
+	'shiftDown' : false,
+	'arrowLeftDown' : false,
+	'arrowRighftDown' : false,
+	'arrowDownDown' : false,
+	'arrowUpDown' : false,
+	'direction' : "r"
+};
 //document.addEventListener("onload", initialize(), false);
 window.onload = initialize();
 
 // function that sets up things, runs when the document has loaded
 function initialize(){
-	index = 0;
-	fps = 60;
+	oneDegree = Math.PI/180;
+	index = oneDegree;
+	fps = 120;
+	speedUp = 1;
 	ballRadius = 5;
 	playing = false;
 	balls = [];
@@ -76,14 +89,111 @@ function initialize(){
 	
 	
 	for(var i = 0; i < balls.length; i++){
-		findBall(balls[i]);
+		placeBall(balls[i]);
 	}	
 	play();
+	document.body.focus();
 }
 
+window.onkeydown = keyDownHandle;
+window.onkeyup = keyUpHandle;
+
+// handles the keyDown events
+function keyDownHandle(event){
+	console.log(event.key + "-pressed");
+	if(event.key === " " || event.key ==="Enter"){
+		play(); //play/pause
+	} else {
+		if(event.key=="Shift"){
+			keyValues.shiftDown = true;
+			if(playing) play(); //pause
+		}
+		if(event.key=="Control"){
+			keyValues.ctrlDown = true;
+			if(playing) play(); //pause
+		}
+		
+		if(event.key=="ArrowLeft"){
+			keyValues.arrowLeftDown = true;
+			if(playing) play(); //pause
+		}
+		if(event.key=="ArrowRight"){
+			keyValues.arrowRightDown = true;
+			if(playing) play(); //pause			
+		}
+		if(event.key=="ArrowUp"){
+			keyValues.arrowUpDown = true;
+			if(playing) play(); //pause
+		}
+		if(event.key=="ArrowDown"){
+			keyValues.arrowDownDown = true;	
+			if(playing) play(); //pause
+		}
+	}
+	
+	useKeyValues();
+}
+
+// handles the keyUp events
+function keyUpHandle(event){
+	console.log(event.key + "-released");
+	if(event.key=="Shift"){
+		keyValues.shiftDown = false;
+	}
+	if(event.key=="Control"){
+		keyValues.ctrlDown = false;
+	}
+	
+	if(event.key=="ArrowLeft"){
+		keyValues.arrowLeftDown = false;
+	}
+	if(event.key=="ArrowRight"){
+		keyValues.arrowRightDown = false;		
+	}
+	if(event.key=="ArrowUp"){
+		keyValues.arrowUpDown = false;
+	}
+	if(event.key=="ArrowDown"){
+		keyValues.arrowDownDown = false;		
+	}	
+	
+	useKeyValues();
+}
+
+// Uses the keyValues to rotate accordingly
+function useKeyValues(){
+	speedUp = 1;
+	if(keyValues.arrowLeftDown){
+		if(keyValues.ctrlDown){
+			
+		} else {
+			
+		}
+	}
+	if(keyValues.arrowRightDown){
+		if(keyValues.ctrlDown){
+			
+		} else {
+			
+		}
+	}
+	if(keyValues.arrowUpDown){
+		
+	}
+	if(keyValues.arrowDownDown){
+		
+	}	
+}
+
+// plays/pauses the rotation
 function play(){
-	loop = window.setInterval(rotateLoop, ~~(1000/fps));
-	playing = true;
+	if(playing == false){
+		loop = window.setInterval(rotateLoop, ~~(1000/fps));
+		playing = true;
+	} else {
+		clearInterval(loop);
+		playing = false;
+	}	
 }
 
 // Creates a div that looks like a circle
@@ -97,6 +207,7 @@ function createBall(){
 	created.style.width= 2*ballRadius + 'px';
 	created.style.borderRadius = ballRadius + 'px';	
 	created.style.background = 'black';
+	if(balls.length > 3) created.style.background = 'red';
 	created.style.position = 'absolute';
 	
 	//Euclidean Coordinates
@@ -123,13 +234,16 @@ function drawLineBWIndices(index1, index2){
 // This is called repeatedly "fps" times per second 
 //  from the initialize() function
 function rotateLoop(){	
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	var oneDegree = Math.PI/180;
-	rotateAll(oneDegree, "x");
-	rotateAll(2*oneDegree, "y");
-	rotateAll(oneDegree, "z");
+	rotateAll(index, "x");
+	rotateAll(2*index, "y");
+	rotateAll(index, "z");
 	
-	//draw lines
+	drawLines();	
+}
+
+// draw all the lines connecting the balls
+function drawLines(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	for(var i = 0; i < balls.length; i++){
 		if(i < 4) drawLineBWIndices(i,i+4);
 		if(~~(i/2)%2==0) drawLineBWIndices(i,i+2);
@@ -139,7 +253,7 @@ function rotateLoop(){
 
 // Sets the on-screen cordinates of the ball
 // Offset to center of screen
-function findBall(ball){
+function placeBall(ball){
 	ball.style.left = windowWidth/2 + ball.x + 'px';
 	ball.style.top = windowHeight/2 + ball.y	+ 'px';	
 }
@@ -189,7 +303,7 @@ function multiplyMatrices(a,b){
 // and return a vector matrix
 // Angle in radians, rotaion counter-clockwise
 
-// rotate around x axis
+// rotate around x axis and return the vector result
 function rotateX(ball, angle){
 	var rotationMatrix = [
 	[1, 0, 				 0],
@@ -200,7 +314,7 @@ function rotateX(ball, angle){
 	return multiplyMatrices(rotationMatrix, getColumnVertex(ball));
 }
 
-// rotate around y axis
+// rotate around y axis and return the vector result
 function rotateY(ball, angle){
 	var rotationMatrix = [
 	[Math.cos(angle),  0, Math.sin(angle)],
@@ -211,7 +325,7 @@ function rotateY(ball, angle){
 	return multiplyMatrices(rotationMatrix, getColumnVertex(ball));
 }
 
-// rotate around z axis
+// rotate around z axis and return the vector result
 function rotateZ(ball, angle){
 	var rotationMatrix = [
 	[Math.cos(angle), -Math.sin(angle), 0],
@@ -229,21 +343,22 @@ function rotateAll(angle, axis){
 		for(var i = 0; i<balls.length; i++){
 			var vector = rotateX(balls[i],angle);
 			setBallCoord(balls[i],vector);
-			findBall(balls[i]);
+			placeBall(balls[i]);
 		}
 	}
 	if(axis==="y"||axis==="Y"){
 		for(var i = 0; i<balls.length; i++){
 			var vector = rotateY(balls[i],angle);
 			setBallCoord(balls[i],vector);
-			findBall(balls[i]);
+			placeBall(balls[i]);
 		}
 	}
 	if(axis==="z"||axis==="Z"){
 		for(var i = 0; i<balls.length; i++){
 			var vector = rotateZ(balls[i],angle);
 			setBallCoord(balls[i],vector);
-			findBall(balls[i]);
+			placeBall(balls[i]);			
 		}
 	}
 }
+
