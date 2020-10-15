@@ -57,8 +57,8 @@ function initialize() {
     spawnApple();
     play();
     document.addEventListener("keydown", keyListener, false);    
-    window.addEventListener("touchstart", handleTouchStart, false);
-    window.addEventListener("touchmove", handleTouchMove, false);
+    document.addEventListener("touchstart", handleTouchStart, false);
+    document.addEventListener("touchmove", handleTouchMove, {passive:false});
 
     fpsText.addEventListener("change", function(event){
         stop();
@@ -331,6 +331,8 @@ function handleTouchMove(evt) {
 
     xDown = xUp;
     yDown = yUp;
+    
+    evt.preventDefault();
 }
 
 function keyListener(event) {
